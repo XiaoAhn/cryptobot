@@ -30,7 +30,8 @@ const exchangeContract = new web3.eth.Contract(EXCHANGE_ABI, EXCHANGE_ADDRESS);
 const ETH_AMOUNT = web3.utils.toWei('1', 'Ether')
 console.log("Eth Amount", ETH_AMOUNT)
 
-const ETH_SELL_PRICE = web3.utils.toWei('200', 'Ether') // 200 Dai a.k.a. $200 USD
+const ETH_STOP_PRICE = web3.utils.toWei('550', 'Ether') // 200 Dai a.k.a. $200 USD
+const ETH_SELL_PRICE = web3.utils.toWei('580', 'Ether') // 200 Dai a.k.a. $200 USD
 
 async function sellEth(ethAmount, daiAmount) {
   // Set Deadline 1 minute from now
@@ -85,7 +86,7 @@ async function monitorPrice() {
     const price = web3.utils.fromWei(daiAmount.toString(), 'Ether')
     console.log('Eth Price:', price, ' DAI')
 
-    if(price <= ETH_SELL_PRICE) {
+    if (price <= ETH_STOP_PRICE || price > ETH_SELL_PRICE) {
       console.log('Selling Eth...')
       // Check balance before sale
       await checkBalances()
